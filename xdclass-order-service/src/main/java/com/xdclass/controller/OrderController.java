@@ -1,10 +1,13 @@
 package com.xdclass.controller;
 
+import com.alibaba.nacos.shaded.io.grpc.StreamTracer;
 import com.xdclass.domain.Video;
 import com.xdclass.domain.VideoOrder;
 import com.xdclass.service.VideoService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,8 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @RequestMapping("api/v1/video_order")
+//该注解表示会动态刷新nacos中的配置文件，nacos中的配置文件改动了代码就会立即更新
+@RefreshScope
 public class OrderController {
 
     @Resource
@@ -43,6 +48,9 @@ public class OrderController {
     @Resource
     private VideoService videoService;
 
+    @Value("${video.title}")
+    private String videoTitle;
+
     @RequestMapping("/save")
     public Object findById(int videoId){
 //        Video video = restTemplate.getForObject("http://127.0.0.1:9000/api/v1/video/findById?videoId=" + videoId, Video.class);
@@ -59,6 +67,7 @@ public class OrderController {
             videoOrder.setVideoTitle(video.getTitle());
             videoOrder.setCreateTime(new Date());
             videoOrder.setServerInfo(video.getServerInfo());
+            videoOrder.setVideoTitle(videoTitle);
             return videoOrder;
     }
 
@@ -79,11 +88,11 @@ public class OrderController {
     int temp = 0;
     @RequestMapping("/list")
     public Object list(HttpServletRequest request){
-//        try {
-//            TimeUnit.SECONDS.sleep(3);
-//        } catch (InterruptedException e) {
-//
-//        }
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+
+        }
         temp ++;
         if (temp%3==0){
 //            throw new RuntimeException("异常错误");

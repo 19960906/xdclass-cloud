@@ -1,36 +1,42 @@
-server:
-  port: 8000
-spring:
-  application:
-   name: xdclass-order-service
-  datasource:
-   driver-class-name: com.mysql.cj.jdbc.Driver
-   url: jdbc:mysql://127.0.0.1:3306/cloud_video?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
-   username: root
-   password: 1234
-  #nacos地址
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
-    sentinel:
-      transport:
-        #控制台的端口
-        dashboard: 127.0.0.1:8080
-        #服务与sentinel通信的端口
-        port: 9999
-
-  #控制台输出sql、下划线转驼峰
-mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    map-underscore-to-camel-case: true
-#配置负载规则，video是服务端，但是我们是在客户端做的负载(也就是xdclass-order-service里面配置的负载均衡)，所以在这里配置负载规则
-xdclass-video-service:
-  ribbon:
-    #随机负载均衡策略
-    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
-#开启feign对sentinel的支持
-feign:
-  sentinel:
-    enabled: true
+#server:
+#  port: 8000
+#spring:
+#  application:
+#   name: xdclass-order-service #服务名称
+#  zipkin:
+#    base-url: http://127.0.0.1:9411/ #zipKin地址
+#    discovery-client-enabled: false #不开启服务发现
+#  sleuth:
+#    sampler:
+#      probability: 1.0 #采样百分比，多少个请求采集一次，1.0表示全部，0.1表示10%
+#  datasource:
+#   driver-class-name: com.mysql.cj.jdbc.Driver
+#   url: jdbc:mysql://127.0.0.1:3306/cloud_video?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+#   username: root
+#   password: 1234
+#  #nacos地址
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#    sentinel:
+#      transport:
+#        #控制台的端口
+#        dashboard: 127.0.0.1:8080
+#        #服务与sentinel通信的端口
+#        port: 9999
+#
+#  #控制台输出sql、下划线转驼峰
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    map-underscore-to-camel-case: true
+##配置负载规则，video是服务端，但是我们是在客户端做的负载(也就是xdclass-order-service里面配置的负载均衡)，所以在这里配置负载规则
+#xdclass-video-service:
+#  ribbon:
+#    #随机负载均衡策略
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+##开启feign对sentinel的支持
+#feign:
+#  sentinel:
+#    enabled: true
